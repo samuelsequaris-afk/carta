@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Carta para Alejandra — carte QR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Cormorant Garamond',serif;
+    background:#e9dfce;
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;padding:24px;
+  }
+  .card{
+    width:340px;background:#f6efe0;
+    border:1px solid #c9a45c;
+    border-radius:6px;
+    padding:34px 30px 30px;
+    text-align:center;
+    box-shadow:0 12px 30px rgba(90,31,40,.18);
+    position:relative;
+  }
+  .card::after{
+    content:"";position:absolute;inset:7px;
+    border:1px solid rgba(138,47,59,.35);border-radius:4px;pointer-events:none;
+  }
+  .top{font-family:'Pinyon Script',cursive;font-size:2.5rem;color:#8a2f3b;line-height:1;}
+  .sub{font-style:italic;color:#6a5a4b;letter-spacing:.12em;margin:6px 0 20px;font-size:1.05rem;}
+  .qr{width:190px;height:190px;margin:0 auto;display:block;}
+  .qr-wrap{padding:12px;background:#fff;border-radius:6px;display:inline-block;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+  .scan{margin-top:18px;font-size:1.25rem;color:#8a2f3b;letter-spacing:.05em;}
+  .scan span{font-size:.85rem;letter-spacing:.28em;text-transform:uppercase;color:#c9a45c;display:block;margin-top:4px;}
+  .foot{margin-top:16px;font-style:italic;color:#6a5a4b;font-size:1rem;}
+  @media print{
+    body{background:#fff;padding:0;}
+    .card{box-shadow:none;}
+    @page{margin:12mm;}
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">Para ti</div>
+    <div class="sub">mi amor, mi alma gemela</div>
+    <div class="qr-wrap"><img class="qr" src="carta-qr.png" alt="Escanéame" /></div>
+    <div class="scan">Escanéame 🌹<span>una carta para ti</span></div>
+    <div class="foot">— tu papacito 💛</div>
+  </div>
+</body>
+</html>
