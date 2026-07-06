@@ -241,9 +241,24 @@
   const letterScene = document.getElementById('letterScene');
   let opened = false;
 
+  // Notify Samuel the moment the letter is opened (ntfy.sh push — private topic)
+  const NTFY_TOPIC = 'carta-alejandra-30271ea831bfee35';
+  function notifyOpened(){
+    try{
+      // NB: les en-têtes HTTP doivent rester ASCII/Latin-1 — pas d'emoji dans "Title"
+      // (les emoji viennent des "Tags" ntfy: rose->🌹, love_letter->💌). Le corps, lui, peut contenir des emoji.
+      fetch('https://ntfy.sh/' + NTFY_TOPIC, {
+        method:'POST',
+        body:'Alejandra vient d’ouvrir ta lettre 🌹💛',
+        headers:{ 'Title':'Tu carta fue abierta', 'Tags':'rose,love_letter', 'Priority':'high' }
+      }).catch(function(){});
+    }catch(e){}
+  }
+
   function openLetter(){
     if(opened) return;
     opened = true;
+    notifyOpened();
     envelope.classList.add('open');
     setTimeout(()=> envScene.classList.add('gone'), 650);
     setTimeout(()=> letterScene.classList.add('show'), 900);
