@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Para mi Alejandra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f6efe0;
+    --paper-shade:#eadfc8;
+    --ink:#40342a;
+    --ink-soft:#6a5a4b;
+    --wine:#8a2f3b;
+    --wine-deep:#5e1f28;
+    --gold:#c9a45c;
+    --rose:#d98a92;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    font-family:'Cormorant Garamond',serif;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #6d2733 0%, #4a1a24 40%, #2c0f16 100%);
+    color:var(--ink);
+    min-height:100dvh;
+    overflow-x:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* soft vignette + grain feel */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background:radial-gradient(140% 100% at 50% 50%, transparent 55%, rgba(0,0,0,.45) 100%);
+    pointer-events:none;z-index:5;
+  }
+
+  /* ---------- petals ---------- */
+  .petal{
+    position:fixed;top:-8vh;z-index:2;
+    width:14px;height:14px;
+    background:radial-gradient(circle at 30% 30%, #f5b8bf, var(--rose) 70%, #b5646d);
+    border-radius:80% 5% 80% 5%;
+    opacity:.85;
+    pointer-events:none;
+    animation:fall linear forwards;
+    will-change:transform;
+  }
+  @keyframes fall{
+    0%{transform:translateY(-10vh) translateX(0) rotate(0deg);opacity:0;}
+    10%{opacity:.9;}
+    100%{transform:translateY(115vh) translateX(var(--drift)) rotate(720deg);opacity:.15;}
+  }
+
+  /* ---------- scene wrapper ---------- */
+  .stage{position:relative;width:100%;max-width:640px;padding:24px;z-index:3;}
+
+  /* ---------- envelope ---------- */
+  .envelope-scene{
+    display:flex;flex-direction:column;align-items:center;gap:26px;
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .hint{
+    font-size:1.35rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--gold);opacity:.9;font-weight:500;
+    padding-left:.32em;
+  }
+  .envelope{
+    position:relative;width:min(78vw,340px);aspect-ratio:3/2;
+    cursor:pointer;
+    filter:drop-shadow(0 26px 40px rgba(0,0,0,.5));
+    animation:breathe 3.4s ease-in-out infinite;
+  }
+  @keyframes breathe{50%{transform:translateY(-8px);}}
+  .env-body{
+    position:absolute;inset:0;border-radius:8px;
+    background:linear-gradient(155deg,#f8f1e3,#e7d9bd);
+    overflow:hidden;
+  }
+  /* diagonal folds of the pocket */
+  .env-body::before,.env-body::after{
+    content:"";position:absolute;bottom:0;width:52%;height:100%;
+    background:linear-gradient(#efe3c8,#e0d0af);
+  }
+  .env-body::before{left:0;clip-path:polygon(0 0,0 100%,100% 100%);border-right:1px solid rgba(150,120,80,.25);}
+  .env-body::after{right:0;clip-path:polygon(100% 0,0 100%,100% 100%);border-left:1px solid rgba(150,120,80,.25);}
+  .env-flap{
+    position:absolute;top:0;left:0;width:100%;height:58%;
+    background:linear-gradient(160deg,#f4ecdb,#e3d3b3);
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    transform-origin:top;
+    transition:transform .7s cubic-bezier(.6,0,.3,1);
+    z-index:4;
+    box-shadow:0 2px 6px rgba(120,90,50,.15);
+  }
+  .seal{
+    position:absolute;top:41%;left:50%;transform:translate(-50%,-50%);
+    width:70px;height:70px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #b5424f, var(--wine) 55%, var(--wine-deep));
+    display:flex;align-items:center;justify-content:center;
+    color:#f2c9cf;font-size:1.8rem;
+    box-shadow:0 6px 14px rgba(0,0,0,.4), inset 0 2px 6px rgba(255,255,255,.25), inset 0 -4px 8px rgba(0,0,0,.35);
+    z-index:6;transition:transform .5s ease, opacity .5s ease;
+    border:2px solid rgba(255,255,255,.12);
+  }
+  /* opened state */
+  .envelope.open .env-flap{transform:rotateX(180deg);z-index:1;}
+  .envelope.open .seal{transform:translate(-50%,-50%) scale(.4);opacity:0;}
+  .envelope-scene.gone{opacity:0;transform:scale(.9) translateY(-10px);pointer-events:none;}
+
+  /* ---------- letter ---------- */
+  .letter-scene{
+    position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;
+    padding:22px 14px;opacity:0;pointer-events:none;
+    transition:opacity 1s ease .35s;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+  }
+  .letter-scene.show{opacity:1;pointer-events:auto;}
+  .letter{
+    position:relative;width:100%;max-width:560px;margin:auto;
+    background-color:var(--paper);
+    border-radius:4px;
+    padding:52px clamp(26px,7vw,58px) 46px;
+    box-shadow:0 30px 60px rgba(0,0,0,.45);
+    transform:translateY(24px) scale(.98);
+    transition:transform 1s cubic-bezier(.2,.7,.2,1) .35s;
+    background-image:
+      repeating-linear-gradient(transparent, transparent 37px, rgba(120,95,60,.06) 38px),
+      radial-gradient(120% 80% at 80% 0%, rgba(217,138,146,.12), transparent 60%);
+  }
+  .letter-scene.show .letter{transform:translateY(0) scale(1);}
+  .letter::after{
+    content:"";position:absolute;inset:0;border:1px solid rgba(120,90,50,.18);
+    border-radius:4px;margin:9px;pointer-events:none;
+  }
+  .heading{
+    font-family:'Pinyon Script',cursive;
+    font-size:clamp(2.6rem,10vw,3.6rem);
+    color:var(--wine);
+    text-align:center;line-height:1;
+    margin-bottom:6px;
+  }
+  .heading-sub{
+    text-align:center;font-style:italic;color:var(--ink-soft);
+    letter-spacing:.14em;font-size:1.05rem;margin-bottom:30px;
+  }
+  .body-text p{
+    font-size:clamp(1.12rem,2.6vw,1.32rem);
+    line-height:1.7;color:var(--ink);
+    margin-bottom:18px;
+    opacity:0;transform:translateY(10px);
+  }
+  .letter-scene.show .body-text p{animation:reveal .9s ease forwards;}
+  .letter-scene.show .body-text p:nth-child(1){animation-delay:.8s;}
+  .letter-scene.show .body-text p:nth-child(2){animation-delay:1.15s;}
+  .letter-scene.show .body-text p:nth-child(3){animation-delay:1.5s;}
+  .letter-scene.show .body-text p:nth-child(4){animation-delay:1.85s;}
+  .letter-scene.show .body-text p:nth-child(5){animation-delay:2.2s;}
+  @keyframes reveal{to{opacity:1;transform:translateY(0);}}
+
+  .em{color:var(--wine);font-weight:600;}
+
+  .divider{
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    color:var(--rose);margin:24px 0 18px;font-size:1.1rem;
+    opacity:0;animation:reveal .9s ease forwards 2.5s;
+  }
+  .divider::before,.divider::after{
+    content:"";height:1px;width:60px;
+    background:linear-gradient(90deg,transparent,var(--rose));
+  }
+  .divider::after{background:linear-gradient(90deg,var(--rose),transparent);}
+
+  .signature{
+    text-align:right;opacity:0;animation:reveal .9s ease forwards 2.75s;
+  }
+  .signature .from{font-style:italic;color:var(--ink-soft);font-size:1.05rem;}
+  .signature .name{
+    font-family:'Pinyon Script',cursive;
+    font-size:clamp(2.4rem,8vw,3rem);color:var(--wine);line-height:1;margin-top:2px;
+  }
+  .signature .tag{font-style:italic;color:var(--rose);font-size:1.05rem;}
+
+  @media (max-width:420px){
+    .stage{padding:12px;}
+    .letter{padding:44px 26px 38px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;transition-duration:.2s!important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- Envelope -->
+  <div class="envelope-scene" id="envScene">
+    <div class="hint">Ábreme</div>
+    <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open the letter">
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="seal">❤</div>
+    </div>
+    <div class="hint" style="font-size:.85rem;letter-spacing:.2em;opacity:.65;">una carta para ti · toca para abrir</div>
+  </div>
+
+  <!-- Letter -->
+  <div class="letter-scene" id="letterScene">
+    <article class="letter">
+      <h1 class="heading">Para mi Alejandra</h1>
+      <div class="heading-sub">mi amor, mi alma gemela</div>
+      <div class="body-text">
+        <p>You are my <span class="em">soulmate</span>, and I love you in a way I simply cannot put into words.</p>
+        <p>Since the day I met you, I've known we were meant to be. I thank God every day for bringing you into my life. He has a plan for us, and I want to become the best version of myself, every single day, for you. I believe you feel the same.</p>
+        <p>I know distance brings its own challenges, but I need you to know, from the bottom of my heart, that no matter what life throws at us, at you or at me, no matter your difficulties or your doubts, <span class="em">I will always choose you.</span></p>
+        <p>I can't wait to see you in a few days, to get lost in your eyes, taste your lips again, and build the life we'll share for the rest of our lives.</p>
+        <p>Know that I am yours. <span class="em">Forever.</span></p>
+      </div>
+
+      <div class="divider">❦</div>
+
+      <div class="signature">
+        <div class="from">Forever yours,</div>
+        <div class="name">Samuel</div>
+        <div class="tag">tu papacito 💛</div>
+      </div>
+    </article>
+  </div>
+
+</div>
+
+<script>
+  const envelope = document.getElementById('envelope');
+  const envScene = document.getElementById('envScene');
+  const letterScene = document.getElementById('letterScene');
+  let opened = false;
+
+  function openLetter(){
+    if(opened) return;
+    opened = true;
+    envelope.classList.add('open');
+    setTimeout(()=> envScene.classList.add('gone'), 650);
+    setTimeout(()=> letterScene.classList.add('show'), 900);
+    burstPetals(26);
+  }
+  envelope.addEventListener('click', openLetter);
+  envelope.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openLetter();} });
+
+  // ---------- falling petals ----------
+  function makePetal(fast){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    const size = 10 + Math.random()*14;
+    p.style.width = size+'px';
+    p.style.height = size+'px';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.setProperty('--drift', (Math.random()*160-80)+'px');
+    const dur = (fast? 5+Math.random()*4 : 8+Math.random()*7);
+    p.style.animationDuration = dur+'s';
+    p.style.opacity = .5 + Math.random()*.4;
+    if(Math.random()>.5) p.style.borderRadius='5% 80% 5% 80%';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), dur*1000+400);
+  }
+  // gentle ambient petals from the start
+  setInterval(()=>makePetal(false), 900);
+  for(let i=0;i<6;i++) setTimeout(()=>makePetal(false), i*400);
+  function burstPetals(n){ for(let i=0;i<n;i++) setTimeout(()=>makePetal(true), i*90); }
+</script>
+</body>
+</html>
